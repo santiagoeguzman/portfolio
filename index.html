@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santiago E. Guzmán | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --text: #ffffff;
+            --accent: #00ffff; 
+            --gray: #666;
+            --card: #161616;
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ASSETS VISUALES: Orbes de luz */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -10%; right: -10%;
+            width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: -10%; left: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        nav {
+            padding: 30px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(13, 13, 13, 0.8);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+        }
+
+        .brand-name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; }
+
+        header { padding: 160px 8% 60px; height: 85vh; display: flex; flex-direction: column; justify-content: center; max-width: 1400px; margin: 0 auto; }
+        .volanta { font-family: 'JetBrains Mono', monospace; color: var(--gray); text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; margin-bottom: 20px; }
+        h1 { font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; max-width: 1000px; letter-spacing: -0.04em; }
+
+        .narrativa { padding: 60px 8%; max-width: 1400px; margin: 0 auto; position: relative; }
+        /* ASSET: Línea de acento lateral */
+        .narrativa::before {
+            content: "";
+            position: absolute;
+            left: calc(8% - 20px); top: 60px;
+            width: 2px; height: 100px;
+            background: var(--accent);
+            opacity: 0.5;
+        }
+
+        .narrativa p { font-size: clamp(1.1rem, 2vw, 1.4rem); color: #ccc; max-width: 800px; margin-bottom: 25px; }
+        
+        .idiomas-container { display: flex; gap: 10px; margin-top: 20px; }
+        .lang-pill { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; border: 1px solid #333; padding: 5px 15px; border-radius: 50px; background: #1a1a1a; }
+
+        /* Servicios */
+        .services-section { padding: 80px 8%; max-width: 1400px; margin: 0 auto; }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+        .service-card { background-color: var(--card); padding: 40px; border: 1px solid #222; transition: var(--transition); }
+        .service-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 255, 255, 0.05); }
+        .service-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
+        .service-card p { color: var(--gray); font-size: 0.9rem; }
+
+        /* Filtros */
+        .filter-container { padding: 120px 8% 20px; max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 10px; }
+        .filter-btn {
+            background: none; border: 1px solid #222; color: var(--gray);
+            padding: 8px 18px; border-radius: 4px; cursor: pointer;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; transition: var(--transition);
+        }
+        .filter-btn.active, .filter-btn:hover { border-color: var(--accent); color: var(--text); background: rgba(0, 255, 255, 0.05); }
+
+        /* Lista de Proyectos */
+        .proyectos-list { padding: 20px 8% 40px; max-width: 1400px; margin: 0 auto; }
+        .proyecto-item {
+            display: none; 
+            justify-content: space-between; align-items: center;
+            padding: 35px 0; border-bottom: 1px solid #222;
+            text-decoration: none; color: inherit; transition: var(--transition);
+            animation: fadeIn 0.5s forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .proyecto-item:hover { padding-left: 20px; color: var(--accent); border-bottom-color: var(--accent); }
+        .p-info { display: flex; flex-direction: column; }
+        .p-name { font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 700; }
+        .p-service { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gray); text-transform: uppercase; margin-top: 5px; }
+        .p-arrow { font-size: 1.2rem; opacity: 0; transition: var(--transition); color: var(--accent); }
+        .proyecto-item:hover .p-arrow { opacity: 1; transform: translateX(10px); }
+
+        /* Botón Ver Más */
+        .load-more-container { text-align: center; padding: 40px 8% 60px; }
+        #loadMoreBtn {
+            background: none; border: 1px solid var(--accent); color: var(--accent);
+            padding: 15px 40px; font-weight: 700; cursor: pointer; transition: var(--transition);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+        }
+        #loadMoreBtn:hover { background: var(--accent); color: var(--bg); }
+
+        /* Footer con Datos Personales */
+        footer { padding: 100px 8% 150px; text-align: center; max-width: 1400px; margin: 0 auto; }
+        
+        .personal-info { 
+            margin-bottom: 60px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .personal-info h4 { color: #888; font-family: 'Inter', sans-serif; font-size: 1.2rem; margin-bottom: 8px; }
+
+        .cta { 
+            display: inline-block;
+            font-size: clamp(1.8rem, 5vw, 3.5rem); 
+            font-weight: 800; 
+            text-decoration: none; 
+            color: var(--text); 
+            border-bottom: 4px solid var(--accent); 
+            transition: var(--transition);
+            padding-bottom: 10px;
+        }
+        .cta:hover { color: var(--accent); border-bottom-color: var(--text); }
+
+        @media (max-width: 992px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .proyecto-item { flex-direction: row; }
+            .narrativa::before { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="brand-name">SANTIAGO E. GUZMÁN</div>
+        <div style="font-size: 0.7rem; color: var(--gray);">BUENOS AIRES / 2026</div>
+    </nav>
+
+    <header>
+        <div class="volanta">Marketing Strategist & Content Lead</div>
+        <h1>Diseño la narrativa que impulsa el crecimiento de tu marca.</h1>
+    </header>
+
+    <section class="narrativa">
+        <p>Mi trabajo comienza donde termina la redacción tradicional. Entiendo la comunicación como un sistema vivo: si una pieza de contenido no cumple un objetivo de negocio o no mejora la experiencia del usuario, es una oportunidad perdida.</p>
+        <p>Ayudo a empresas y marcas independientes a diseñar estrategias, optimizar visibilidad y ejecutar narrativas que construyen autoridad.</p>
+        <div class="idiomas-container">
+            <span class="lang-pill">ES NATIVO</span>
+            <span class="lang-pill">EN C1</span>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <h2 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; color: var(--gray); margin-bottom: 40px;">Servicios</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>UX Writing</h3>
+                <p>Diseño de flujos y microcopy que eliminan la fricción en la experiencia del usuario.</p>
+            </div>
+            <div class="service-card">
+                <h3>Content Strategy</h3>
+                <p>Estrategia, planificación, redacción y programación integral de contenidos.</p>
+            </div>
+            <div class="service-card">
+                <h3>SEO & GEO</h3>
+                <p>Posicionamiento orgánico diseñado para motores de búsqueda y modelos de IA.</p>
+            </div>
+            <div class="service-card">
+                <h3>Brand Voice</h3>
+                <p>Definición de identidad verbal, manuales de tono y personalidad de marca.</p>
+            </div>
+            <div class="service-card">
+                <h3>Marketing Strategy</h3>
+                <p>Diseño de embudos y campañas de comunicación 360° con visión de negocio.</p>
+            </div>
+            <div class="service-card">
+                <h3>Auditoría</h3>
+                <p>Análisis y optimización de ecosistemas digitales para detectar fugas de mensajes.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterProjects('all', this)">TODOS</button>
+        <button class="filter-btn" onclick="filterProjects('realestate', this)">REAL ESTATE</button>
+        <button class="filter-btn" onclick="filterProjects('salud', this)">SALUD / MARCA PERSONAL</button>
+        <button class="filter-btn" onclick="filterProjects('it', this)">IT / FINTECH</button>
+        <button class="filter-btn" onclick="filterProjects('turismo', this)">TURISMO / GASTRO</button>
+        <button class="filter-btn" onclick="filterProjects('agencia', this)">EN AGENCIA / OTROS</button>
+    </div>
+
+    <section class="proyectos-list" id="projectList">
+        <a href="http://www.amasr.com.ar" target="_blank" class="proyecto-item" data-category="realestate">
+            <div class="p-info"><span class="p-name">A+R Arquitectos</span><span class="p-service">Brand Voice · Marketing Strategist · UX Writing</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="http://www.hus-realty.com" target="_blank" class="proyecto-item" data-category="realestate">
+            <div class="p-info"><span class="p-name">HÚS Realty</span><span class="p-service">Content Lead</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="http://www.rosbacopartners.com" target="_blank" class="proyecto-item" data-category="realestate">
+            <div class="p-info"><span class="p-name">Rosbaco & Partners</span><span class="p-service">Content Lead</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://www.instagram.com/century21dosil/" target="_blank" class="proyecto-item" data-category="realestate">
+            <div class="p-info"><span class="p-name">Century 21 Dosil</span><span class="p-service">Content Specialist · Marketing Strategist</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="http://www.vitriumcapital.com" target="_blank" class="proyecto-item" data-category="realestate">
+            <div class="p-info"><span class="p-name">Vitrium Capital</span><span class="p-service">Content Specialist · Marketing Strategist</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://www.instagram.com/basso.constructora/" target="_blank" class="proyecto-item" data-category="realestate">
+            <div class="p-info"><span class="p-name">Basso Desarrollos Inmobiliarios</span><span class="p-service">Auditoría · Content Specialist · Marketing Strategist</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://www.jcrsa.com.ar/" target="_blank" class="proyecto-item" data-category="realestate">
+            <div class="p-info"><span class="p-name">JCR S.A.</span><span class="p-service">Auditoría · UX Writing</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+
+        <a href="https://drhugosarmiento.com.ar/" target="_blank" class="proyecto-item" data-category="salud">
+            <div class="p-info"><span class="p-name">Dr. Hugo Sarmiento</span><span class="p-service">SEO · Marca Personal</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://centrobenalcafer.com/" target="_blank" class="proyecto-item" data-category="salud">
+            <div class="p-info"><span class="p-name">Benalcafer</span><span class="p-service">UX Writing · SEO & GEO · Brand Voice</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://cober.com.ar/" target="_blank" class="proyecto-item" data-category="salud">
+            <div class="p-info"><span class="p-name">Cober Medicina Privada</span><span class="p-service">Brand Voice · SEO & GEO</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+
+        <a href="https://www.novakorp.io/" target="_blank" class="proyecto-item" data-category="it">
+            <div class="p-info"><span class="p-name">Novakorp</span><span class="p-service">Brand Voice</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://ingenia.la/es" target="_blank" class="proyecto-item" data-category="it">
+            <div class="p-info"><span class="p-name">Ingenia</span><span class="p-service">Auditoría · Brand Voice · UX Writing</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://www.provy.com.ar/" target="_blank" class="proyecto-item" data-category="it">
+            <div class="p-info"><span class="p-name">Provy (Provincia Seguros)</span><span class="p-service">Auditoría · Brand Voice</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+
+        <a href="https://www.instagram.com/assistotuviaje/" target="_blank" class="proyecto-item" data-category="turismo">
+            <div class="p-info"><span class="p-name">Assisto Tu Viaje</span><span class="p-service">Content Specialist · Marketing Strategist</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://www.instagram.com/cervezamur/" target="_blank" class="proyecto-item" data-category="turismo">
+            <div class="p-info"><span class="p-name">Cervecería MUR</span><span class="p-service">Auditoría · Brand Voice · Content Specialist</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://maldini.com.ar/" target="_blank" class="proyecto-item" data-category="turismo">
+            <div class="p-info"><span class="p-name">Aribau / Maldini</span><span class="p-service">Auditoría · UX Writing · Brand Voice</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://www.le-coin-tranquille.com/" target="_blank" class="proyecto-item" data-category="turismo">
+            <div class="p-info"><span class="p-name">Le Coin Tranquille</span><span class="p-service">Content Specialist · SEO · Brand Voice</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+
+        <a href="http://www.uvirtual.com" target="_blank" class="proyecto-item" data-category="agencia">
+            <div class="p-info"><span class="p-name">UVirtual</span><span class="p-service">Marketing Strategist</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://piolaestudio.com/" target="_blank" class="proyecto-item" data-category="agencia">
+            <div class="p-info"><span class="p-name">Piola Studio</span><span class="p-service">Marketing Strategist</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://thisisdandy.com/es/" target="_blank" class="proyecto-item" data-category="agencia">
+            <div class="p-info"><span class="p-name">Dandy Studio</span><span class="p-service">UX Writing</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+        <a href="https://faunabranding.com/" target="_blank" class="proyecto-item" data-category="agencia">
+            <div class="p-info"><span class="p-name">Fauna Branding Agency</span><span class="p-service">UX Writing · Brand Voice</span></div>
+            <div class="p-arrow">→</div>
+        </a>
+    </section>
+
+    <div class="load-more-container">
+        <button id="loadMoreBtn" onclick="loadMore()">VER MÁS PROYECTOS</button>
+    </div>
+
+    <footer>
+        <div class="personal-info">
+            <h4>Santiago E. Guzmán</h4>
+            <p>UX Writer - Content Specialist - Marketing Strategist</p>
+            <p>+5491169707254</p>
+        </div>
+        <a href="mailto:tuemail@ejemplo.com" class="cta">Hablemos de estrategia</a>
+    </footer>
+
+    <script>
+        let currentLimit = 5;
+        let currentCategory = 'all';
+
+        function filterProjects(category, element) {
+            currentCategory = category;
+            currentLimit = 5;
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            if(element) element.classList.add('active');
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const projects = document.querySelectorAll('.proyecto-item');
+            let visibleCount = 0;
+            let totalInCategory = 0;
+
+            projects.forEach(project => {
+                const cat = project.getAttribute('data-category');
+                if (currentCategory === 'all' || cat === currentCategory) {
+                    totalInCategory++;
+                    if (visibleCount < currentLimit) {
+                        project.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        project.style.display = 'none';
+                    }
+                } else {
+                    project.style.display = 'none';
+                }
+            });
+
+            const btn = document.getElementById('loadMoreBtn');
+            if (btn) btn.style.display = (visibleCount < totalInCategory) ? 'inline-block' : 'none';
+        }
+
+        function loadMore() {
+            currentLimit += 5;
+            updateDisplay();
+        }
+
+        window.onload = function() {
+            updateDisplay();
+        };
+    </script>
+</body>
+</html>
